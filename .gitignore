@@ -4,3 +4,5 @@ cputest/
 runs/
 data/
 __pycache__/
+output/
+.vscode/
