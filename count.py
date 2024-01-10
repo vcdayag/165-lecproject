@@ -11,6 +11,7 @@ if not os.path.exists("output/"):
 
 model = YOLO("yolov8n.pt")
 cap = cv2.VideoCapture("data/VID_20231220_132423.mp4")
+# cap = cv2.VideoCapture(0) # to use camera
 assert cap.isOpened(), "Error reading video file"
 w, h, fps = (
     int(cap.get(x))
@@ -45,6 +46,11 @@ trackedcars = []
 
 while True and cap.isOpened():
     success, im0 = cap.read()
+    if not success:
+        print(
+            "Video frame is empty or video processing has been successfully completed."
+        )
+        break
 
     tracks = model.track(
         im0, persist=True, show=False, classes=CLASSES_TO_COUNT, verbose=False
@@ -53,10 +59,11 @@ while True and cap.isOpened():
     counted_image = counter.start_counting(im0, tracks)
 
     if counted_image is None:
-        print(
-            "Video frame is empty or video processing has been successfully completed."
-        )
-        break
+        cv2.imshow("MainImage", im0)
+        if cv2.waitKey(1) & 0xFF == ord("q"):
+            break
+        continue
+
     # print(counter.in_counts)
     # print(counter.out_counts)
     if carcounter < counter.out_counts:
