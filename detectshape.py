@@ -14,15 +14,19 @@ def detectShape(img: cv2.typing.MatLike):
     contours, _ = cv2.findContours( 
         threshold, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE) 
 
-    i = 0
+    # here we are ignoring first counter because 
+    # findcontour function detects whole image as shape 
+    contours = contours[1:]
+    
+    AREA_MIN = 2000
+    AREA_MAX = 5000
 
     # list for storing names of shapes 
-    for contour in contours: 
-
-        # here we are ignoring first counter because 
-        # findcontour function detects whole image as shape 
-        if i == 0: 
-            i = 1
+    for contour in contours:
+        _,_,w,h = cv2.boundingRect(contour)
+        contourarea = w*h
+        
+        if contourarea < AREA_MIN or contourarea > AREA_MAX:
             continue
 
         # cv2.approxPloyDP() function to approximate the shape 
@@ -41,25 +45,28 @@ def detectShape(img: cv2.typing.MatLike):
             y = int(M['m01']/M['m00']) 
 
         # putting shape name at center of each shape 
-        if len(approx) == 3: 
-            cv2.putText(img, 'Triangle', (x, y), 
-                        cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 255, 255), 2) 
-
-        elif len(approx) == 4: 
+        if len(approx) == 4: 
             cv2.putText(img, 'Quadrilateral', (x, y), 
                         cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 255, 255), 2) 
+        # if len(approx) == 3: 
+        #     cv2.putText(img, 'Triangle', (x, y), 
+        #                 cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 255, 255), 2) 
 
-        elif len(approx) == 5: 
-            cv2.putText(img, 'Pentagon', (x, y), 
-                        cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 255, 255), 2) 
+        # elif len(approx) == 4: 
+        #     cv2.putText(img, 'Quadrilateral', (x, y), 
+        #                 cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 255, 255), 2) 
 
-        elif len(approx) == 6: 
-            cv2.putText(img, 'Hexagon', (x, y), 
-                        cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 255, 255), 2) 
+        # elif len(approx) == 5: 
+        #     cv2.putText(img, 'Pentagon', (x, y), 
+        #                 cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 255, 255), 2) 
 
-        else: 
-            cv2.putText(img, 'circle', (x, y), 
-                        cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 255, 255), 2) 
+        # elif len(approx) == 6: 
+        #     cv2.putText(img, 'Hexagon', (x, y), 
+        #                 cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 255, 255), 2) 
+
+        # else: 
+        #     cv2.putText(img, 'circle', (x, y), 
+        #                 cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 255, 255), 2) 
 
     # displaying the image after drawing contours 
     cv2.imshow('shapes', img) 
