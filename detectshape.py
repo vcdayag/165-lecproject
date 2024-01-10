@@ -3,8 +3,8 @@ import cv2
 
 AREA_MIN = 2000
 AREA_MAX = 5000000
-MIN_YELLOW = 10
-MIN_RED = 10
+MIN_YELLOW = 50
+MIN_RED = 50
 
 
 def detectShape(img: cv2.typing.MatLike, mask: cv2.typing.MatLike, carnumber: int):
@@ -45,30 +45,31 @@ def detectShape(img: cv2.typing.MatLike, mask: cv2.typing.MatLike, carnumber: in
         X, Y, W, H = c
 
         croppedimage = finalimage[Y : Y + H, X : X + W]
-        red_output = checkColor(croppedimage, "red1")
-        red_pixels = cv2.countNonZero(red_output)
-
         yellow_output = checkColor(croppedimage, "yellow2")
         yellow_pixels = cv2.countNonZero(yellow_output)
 
-        if red_pixels > MIN_RED and yellow_pixels > MIN_YELLOW:
-            finalimage = cv2.rectangle(
-                finalimage, (c[0], c[1]), (c[0] + c[2], c[1] + c[3]), (0, 255, 0), 2
-            )
-            possibleStickers.append(c)
+        if yellow_pixels < MIN_YELLOW:
+            continue
 
-            if True:
-                print("   red:", red_pixels)
-                print("yellow:", yellow_pixels)
-                print()
+        red_output = checkColor(croppedimage, "red1")
+        red_pixels = cv2.countNonZero(red_output)
 
-            cv2.imwrite(
-                f"output/car_{carnumber}_{red_pixels}_{yellow_pixels}.jpg", croppedimage
-            )
+        if red_pixels < MIN_RED:
+            continue
 
-    # cv2.imshow("shapes", finalimage)
-    # cv2.waitKey(0)
-    # cv2.destroyAllWindows()
+        finalimage = cv2.rectangle(
+            finalimage, (c[0], c[1]), (c[0] + c[2], c[1] + c[3]), (0, 255, 0), 2
+        )
+        possibleStickers.append(c)
+
+        if True:
+            print("   red:", red_pixels)
+            print("yellow:", yellow_pixels)
+            print()
+
+        cv2.imwrite(
+            f"output/car_{carnumber}_{red_pixels}_{yellow_pixels}.jpg", croppedimage
+        )
 
     return possibleStickers
 
