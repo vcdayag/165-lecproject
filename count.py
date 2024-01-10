@@ -62,13 +62,15 @@ while True and cap.isOpened():
     if carcounter < counter.out_counts:
         carcounter += 1
 
+        cv2.imwrite(f"output/car_{carcounter}.jpg", counted_image)
+
         mask = StickerMask(im0)
         result = StickerResult(im0, mask)
 
         # print(tracks[0].boxes)
         trackedcars.append(tracks[0].boxes)
 
-        possibleStickers = detectShape(result, mask)
+        possibleStickers = detectShape(result, mask, carcounter)
         if len(possibleStickers) > 0:
             stickeredcarcounter += 1
 

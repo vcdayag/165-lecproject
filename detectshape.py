@@ -7,7 +7,7 @@ MIN_YELLOW = 10
 MIN_RED = 10
 
 
-def detectShape(img: cv2.typing.MatLike, mask: cv2.typing.MatLike):
+def detectShape(img: cv2.typing.MatLike, mask: cv2.typing.MatLike, carnumber: int):
     # converting image into grayscale image
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     contourmask = mask.copy()
@@ -62,7 +62,9 @@ def detectShape(img: cv2.typing.MatLike, mask: cv2.typing.MatLike):
                 print("yellow:", yellow_pixels)
                 print()
 
-            cv2.imwrite(f"output/{red_pixels}_{yellow_pixels}.jpg", croppedimage)
+            cv2.imwrite(
+                f"output/car_{carnumber}_{red_pixels}_{yellow_pixels}.jpg", croppedimage
+            )
 
     # cv2.imshow("shapes", finalimage)
     # cv2.waitKey(0)
