@@ -22,6 +22,10 @@ red_upper = np.array(color_dict_HSV["red1"][0])
 yellow_lower = np.array(color_dict_HSV["yellow2"][1])
 yellow_upper = np.array(color_dict_HSV["yellow2"][0])
 
+def checkColor(img: cv2.typing.MatLike, colortag: str):
+    img = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+    mask = cv2.inRange(img, np.array(color_dict_HSV[colortag][1]), np.array(color_dict_HSV[colortag][0]))
+    return mask
 
 def StickerMask(img: cv2.typing.MatLike) -> cv2.typing.MatLike:
     # original
