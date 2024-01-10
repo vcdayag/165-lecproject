@@ -33,17 +33,17 @@ def checkColor(img: cv2.typing.MatLike, colortag: str):
 
 
 def StickerMask(img: cv2.typing.MatLike) -> cv2.typing.MatLike:
+    
     # original
     image = img
+    image = cv2.cvtColor(image, cv2.COLOR_BGR2HSV) # convert from RGB to HSV
 
-    image = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
+    # applied a red mask then dilate to identify the red regions in the image
     red_mask = cv2.inRange(image, red_lower, red_upper)
     red_mask = cv2.dilate(red_mask, kernel, iterations=2)
 
+    # applied a yellow mask then dilate to identify the yellow regions in the image
     yellow_mask = cv2.inRange(image, yellow_lower, yellow_upper)
-
-    # dilate yellow mask
-    # yellow_mask = cv2.erode(yellow_mask, kernel, iterations=1)
     yellow_mask = cv2.dilate(yellow_mask, kernel, iterations=2)
 
     mask = cv2.bitwise_xor(yellow_mask, red_mask)
