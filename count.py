@@ -19,7 +19,7 @@ video_writer = cv2.VideoWriter("object_counting_output.avi",
 
 # Init Object Counter
 counter = object_counter.ObjectCounter()
-counter.set_args(view_img=True,
+counter.set_args(view_img=False,
                  reg_pts=region_points,
                  classes_names=model.names,
                  draw_tracks=True)
@@ -33,7 +33,15 @@ while True and cap.isOpened():
                          classes=classes_to_count)
 
     im0 = counter.start_counting(im0, tracks)
-    video_writer.write(im0)
+    print(counter.in_counts)
+    print(counter.out_counts)
+
+    cv2.imshow("ultralytics", im0)
+    # create output file
+    # video_writer.write(im0)
+
+    if cv2.waitKey(1) & 0xFF == ord('q'):
+        break
 
 cap.release()
 video_writer.release()
