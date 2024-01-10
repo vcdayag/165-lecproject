@@ -21,35 +21,40 @@ def detectShape(img: cv2.typing.MatLike, mask: cv2.typing.MatLike):
     
     AREA_MIN = 2000
     AREA_MAX = 5000
+    
+    contourBoundingBox = []
 
     # list for storing names of shapes 
     for contour in contours:
-        _,_,w,h = cv2.boundingRect(contour)
+        x,y,w,h = cv2.boundingRect(contour)
         contourarea = w*h
         
         if contourarea < AREA_MIN or contourarea > AREA_MAX:
             continue
+        
+        contourBoundingBox.append((x,y,w,h))
+        # cv2.rectangle(img, (x, y), (x + w, y + h), (0, 255,0), 2)
 
         # cv2.approxPloyDP() function to approximate the shape 
-        approx = cv2.approxPolyDP( 
-            contour, 0.01 * cv2.arcLength(contour, True), True) 
+        # approx = cv2.approxPolyDP( 
+        #     contour, 0.01 * cv2.arcLength(contour, True), True) 
         
         # using drawContours() function 
         # cv2.drawContours(img, [contour], 0, (0, 0, 255), 5) 
         cv2.drawContours(countourmask, [contour], -1, (0,0,0), -1)
 
         # finding center point of shape 
-        M = cv2.moments(contour) 
-        x = 0
-        y = 0
-        if M['m00'] != 0.0: 
-            x = int(M['m10']/M['m00']) 
-            y = int(M['m01']/M['m00']) 
+        # M = cv2.moments(contour) 
+        # x = 0
+        # y = 0
+        # if M['m00'] != 0.0: 
+        #     x = int(M['m10']/M['m00']) 
+        #     y = int(M['m01']/M['m00']) 
 
         # putting shape name at center of each shape 
-        if len(approx) == 4: 
-            cv2.putText(img, 'Quadrilateral', (x, y), 
-                        cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 255, 255), 2) 
+        # if len(approx) == 4: 
+        #     cv2.putText(img, 'Quadrilateral', (x, y), 
+        #                 cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 255, 255), 2) 
         # if len(approx) == 3: 
         #     cv2.putText(img, 'Triangle', (x, y), 
         #                 cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 255, 255), 2) 
@@ -72,12 +77,16 @@ def detectShape(img: cv2.typing.MatLike, mask: cv2.typing.MatLike):
 
     # displaying the image after drawing contours 
     finalmask = cv2.bitwise_xor(countourmask,mask)
-    
     finalimage = cv2.bitwise_and(img, img, mask=finalmask)
+    
+    for c in contourBoundingBox:
+        finalimage = cv2.rectangle(finalimage, (c[0], c[1]), (c[0] + c[2], c[1] + c[3]), (0, 255,0), 2) 
+    
     cv2.imshow('shapes', finalimage) 
-
     cv2.waitKey(0) 
-    cv2.destroyAllWindows() 
+    cv2.destroyAllWindows()
+    
+    return contourBoundingBox
 
 if __name__ == "__main__":
     img = cv2.imread('data/IMG_20231220_132420.jpg')
