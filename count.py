@@ -27,9 +27,9 @@ REGION_POINTS = [
     (RIGHTREGION, 0),
     (RIGHTREGION, 1080),
     (LEFTREGION, 1080),
-]  
+]
 
-CLASSES_TO_COUNT = [2, 7]  # selects car and truck classes
+CLASSES_TO_COUNT = [2]  # selects car classes
 
 # initialize the video writer
 video_writer = cv2.VideoWriter(
@@ -49,7 +49,9 @@ car_list = []
 while True and capture.isOpened():
     success, input_img = capture.read()
     if not success:
-        print("Video frame is empty or video processing has been successfully completed.")
+        print(
+            "Video frame is empty or video processing has been successfully completed."
+        )
         break
 
     # perform object tracking on the input image
@@ -69,12 +71,14 @@ while True and capture.isOpened():
     # print(counter.in_counts)
     # print(counter.out_counts)
 
-    # if a car/truck is detected
+    # if a car is detected
     if car_counter < counter.out_counts:
         car_counter += 1
-        cv2.imwrite(f"output/car_{car_counter}.jpg", counted_image) # saves the image containing the car
-        mask = StickerMask(input_img) # applies a red and yellow mask
-        result = StickerResult(input_img, mask) 
+        cv2.imwrite(
+            f"output/car_{car_counter}.jpg", counted_image
+        )  # saves the image containing the car
+        mask = StickerMask(input_img)  # applies a red and yellow mask
+        result = StickerResult(input_img, mask)
 
         # print(tracks[0].boxes)
         car_list.append(tracks[0].boxes)
@@ -90,7 +94,6 @@ while True and capture.isOpened():
         # cv2.imshow("STICKER", result)
         # cv2.waitKey(0)
 
-    # print(input_img)
     cv2.imshow("MainImage", counted_image)
     # create output file
     # video_writer.write(input_img)
