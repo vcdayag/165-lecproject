@@ -13,8 +13,16 @@ w, h, fps = (
     for x in (cv2.CAP_PROP_FRAME_WIDTH, cv2.CAP_PROP_FRAME_HEIGHT, cv2.CAP_PROP_FPS)
 )
 
-region_points = [(750, 0), (800, 0), (800, 1080), (750, 1080)]  # line or region points
-classes_to_count = [2, 7]  # car and truck classes for count
+# REGION_POINTS = [(900, 0), (950, 0), (950, 1080), (900, 1080)]  # line or region points
+LEFTREGION = w // 2 + 100
+RIGHTREGION = LEFTREGION + 50
+REGION_POINTS = [
+    (LEFTREGION, 0),
+    (RIGHTREGION, 0),
+    (RIGHTREGION, 1080),
+    (LEFTREGION, 1080),
+]  # line or region points
+CLASSES_TO_COUNT = [2, 7]  # car and truck classes for count
 
 # Video writer
 video_writer = cv2.VideoWriter(
@@ -24,7 +32,7 @@ video_writer = cv2.VideoWriter(
 # Init Object Counter
 counter = object_counter.ObjectCounter()
 counter.set_args(
-    view_img=False, reg_pts=region_points, classes_names=model.names, draw_tracks=True
+    view_img=False, reg_pts=REGION_POINTS, classes_names=model.names, draw_tracks=True
 )
 
 stickeredcarcounter = 0
@@ -35,7 +43,7 @@ while True and cap.isOpened():
     success, im0 = cap.read()
 
     tracks = model.track(
-        im0, persist=True, show=False, classes=classes_to_count, verbose=False
+        im0, persist=True, show=False, classes=CLASSES_TO_COUNT, verbose=False
     )
 
     counted_image = counter.start_counting(im0, tracks)
