@@ -87,8 +87,8 @@ def detectShape(img: cv2.typing.MatLike, mask: cv2.typing.MatLike, car_number: i
             continue
 
         # bounds the detected sticker
-        finalimage = cv2.rectangle(
-            finalimage, (c[0], c[1]), (c[0] + c[2], c[1] + c[3]), (0, 255, 0), 2
+        final_image = cv2.rectangle(
+            final_image, (c[0], c[1]), (c[0] + c[2], c[1] + c[3]), (0, 255, 0), 2
         )
         possibleStickers.append(c)
 
