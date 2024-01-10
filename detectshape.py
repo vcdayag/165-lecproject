@@ -1,11 +1,12 @@
 import cv2 
 
-def detectShape(img: cv2.typing.MatLike):
+def detectShape(img: cv2.typing.MatLike, mask: cv2.typing.MatLike):
     # reading image 
     # img = cv2.imread('data/IMG_20231220_132420.jpg') 
 
     # converting image into grayscale image 
-    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY) 
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    countourmask = mask.copy()
 
     # setting threshold of gray image 
     _, threshold = cv2.threshold(gray, 127, 255, cv2.THRESH_BINARY) 
@@ -34,7 +35,8 @@ def detectShape(img: cv2.typing.MatLike):
             contour, 0.01 * cv2.arcLength(contour, True), True) 
         
         # using drawContours() function 
-        cv2.drawContours(img, [contour], 0, (0, 0, 255), 5) 
+        # cv2.drawContours(img, [contour], 0, (0, 0, 255), 5) 
+        cv2.drawContours(countourmask, [contour], -1, (0,0,0), -1)
 
         # finding center point of shape 
         M = cv2.moments(contour) 
@@ -69,7 +71,10 @@ def detectShape(img: cv2.typing.MatLike):
         #                 cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 255, 255), 2) 
 
     # displaying the image after drawing contours 
-    cv2.imshow('shapes', img) 
+    finalmask = cv2.bitwise_xor(countourmask,mask)
+    
+    finalimage = cv2.bitwise_and(img, img, mask=finalmask)
+    cv2.imshow('shapes', finalimage) 
 
     cv2.waitKey(0) 
     cv2.destroyAllWindows() 

@@ -50,7 +50,7 @@ while True and cap.isOpened():
         print(tracks[0].boxes)
         trackedcars.append(tracks[0].boxes)
         
-        detectShape(result)
+        detectShape(result,mask)
         # cv2.imshow("STICKER", result)
         # cv2.waitKey(0) 
         
