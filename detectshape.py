@@ -2,7 +2,7 @@ from stickerdetection import checkColor
 import cv2
 
 AREA_MIN = 2000
-AREA_MAX = 5000
+AREA_MAX = 5000000
 MIN_YELLOW = 10
 MIN_RED = 10
 
