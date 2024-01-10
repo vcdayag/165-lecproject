@@ -27,12 +27,16 @@ counter.set_args(
     view_img=False, reg_pts=region_points, classes_names=model.names, draw_tracks=True
 )
 
+stickeredcarcounter = 0
 carcounter = 0
 trackedcars = []
+
 while True and cap.isOpened():
     success, im0 = cap.read()
 
-    tracks = model.track(im0, persist=True, show=False, classes=classes_to_count)
+    tracks = model.track(
+        im0, persist=True, show=False, classes=classes_to_count, verbose=False
+    )
 
     counted_image = counter.start_counting(im0, tracks)
 
@@ -49,22 +53,31 @@ while True and cap.isOpened():
         mask = StickerMask(im0)
         result = StickerResult(im0, mask)
 
-        print(tracks[0].boxes)
+        # print(tracks[0].boxes)
         trackedcars.append(tracks[0].boxes)
 
-        detectShape(result, mask)
+        possibleStickers = detectShape(result, mask)
+        if len(possibleStickers) > 0:
+            stickeredcarcounter += 1
+
+        if True:
+            print("totalcars:", carcounter)
+            print("stickered:", stickeredcarcounter)
+            print()
         # cv2.imshow("STICKER", result)
         # cv2.waitKey(0)
 
     # print(im0)
-    cv2.imshow("ultralytics", counted_image)
+    cv2.imshow("MainImage", counted_image)
     # create output file
     # video_writer.write(im0)
 
     if cv2.waitKey(1) & 0xFF == ord("q"):
         break
 
-print(trackedcars)
+print(carcounter)
+print(stickeredcarcounter)
+
 cap.release()
 video_writer.release()
 cv2.destroyAllWindows()

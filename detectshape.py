@@ -39,6 +39,8 @@ def detectShape(img: cv2.typing.MatLike, mask: cv2.typing.MatLike):
     finalmask = cv2.bitwise_xor(contourmask, mask)
     finalimage = cv2.bitwise_and(img, img, mask=finalmask)
 
+    possibleStickers = []
+
     for c in contourBoundingBox:
         X, Y, W, H = c
 
@@ -49,20 +51,22 @@ def detectShape(img: cv2.typing.MatLike, mask: cv2.typing.MatLike):
         yellow_output = checkColor(croppedimage, "yellow2")
         yellow_pixels = cv2.countNonZero(yellow_output)
 
-        print("   red:", red_pixels)
-        print("yellow:", yellow_pixels)
-        print()
+        if False:
+            print("   red:", red_pixels)
+            print("yellow:", yellow_pixels)
+            print()
 
         if red_pixels > MIN_RED and yellow_pixels > MIN_YELLOW:
             finalimage = cv2.rectangle(
                 finalimage, (c[0], c[1]), (c[0] + c[2], c[1] + c[3]), (0, 255, 0), 2
             )
+            possibleStickers.append(c)
 
-    cv2.imshow("shapes", finalimage)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
+    # cv2.imshow("shapes", finalimage)
+    # cv2.waitKey(0)
+    # cv2.destroyAllWindows()
 
-    return contourBoundingBox
+    return possibleStickers
 
 
 if __name__ == "__main__":
