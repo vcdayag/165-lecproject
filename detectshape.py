@@ -1,5 +1,5 @@
-import cv2
 from stickerdetection import checkColor
+import cv2
 
 AREA_MIN = 2000
 AREA_MAX = 5000
@@ -51,16 +51,18 @@ def detectShape(img: cv2.typing.MatLike, mask: cv2.typing.MatLike):
         yellow_output = checkColor(croppedimage, "yellow2")
         yellow_pixels = cv2.countNonZero(yellow_output)
 
-        if False:
-            print("   red:", red_pixels)
-            print("yellow:", yellow_pixels)
-            print()
-
         if red_pixels > MIN_RED and yellow_pixels > MIN_YELLOW:
             finalimage = cv2.rectangle(
                 finalimage, (c[0], c[1]), (c[0] + c[2], c[1] + c[3]), (0, 255, 0), 2
             )
             possibleStickers.append(c)
+
+            if True:
+                print("   red:", red_pixels)
+                print("yellow:", yellow_pixels)
+                print()
+
+            cv2.imwrite(f"output/{red_pixels}_{yellow_pixels}.jpg", croppedimage)
 
     # cv2.imshow("shapes", finalimage)
     # cv2.waitKey(0)

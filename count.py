@@ -4,6 +4,10 @@ from ultralytics.solutions import object_counter
 import cv2
 from stickerdetection import StickerMask, StickerResult
 from detectshape import detectShape
+import os
+
+if not os.path.exists("output/"):
+    os.mkdir("output/")
 
 model = YOLO("yolov8n.pt")
 cap = cv2.VideoCapture("data/VID_20231220_132423.mp4")
