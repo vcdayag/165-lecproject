@@ -38,13 +38,11 @@ def StickerMask(img: cv2.typing.MatLike) -> cv2.typing.MatLike:
     image = img
     image = cv2.cvtColor(image, cv2.COLOR_BGR2HSV) # convert from RGB to HSV
 
-    # applied a red mask then dilate to identify the red regions in the image
-    red_mask = cv2.inRange(image, red_lower, red_upper)
-    red_mask = cv2.dilate(red_mask, kernel, iterations=2)
+    red_mask = cv2.inRange(image, red_lower, red_upper) # create a binary mask identifying red regions
+    red_mask = cv2.dilate(red_mask, kernel, iterations=2) # dilate to fill in gaps 
 
-    # applied a yellow mask then dilate to identify the yellow regions in the image
-    yellow_mask = cv2.inRange(image, yellow_lower, yellow_upper)
-    yellow_mask = cv2.dilate(yellow_mask, kernel, iterations=2)
+    yellow_mask = cv2.inRange(image, yellow_lower, yellow_upper) # create a binary mask identifying yellow regions
+    yellow_mask = cv2.dilate(yellow_mask, kernel, iterations=2) # dilate to fill in gaps 
 
     mask = cv2.bitwise_or(yellow_mask, red_mask) # combines the red and yellow masks
     return mask
