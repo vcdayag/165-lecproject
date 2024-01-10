@@ -98,8 +98,8 @@ while True and capture.isOpened():
     if cv2.waitKey(1) & 0xFF == ord("q"):
         break
 
-print(car_counter)
-print(stickered_car_counter)
+print(f"\nTotal number of cars: {car_counter}")
+print(f"Total number of cars with stickers: {stickered_car_counter}")
 
 capture.release()
 video_writer.release()
