@@ -3,3 +3,4 @@ cpu/
 cputest/
 runs/
 data/
+__pycache__/
