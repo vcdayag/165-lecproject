@@ -6,6 +6,7 @@ AREA_MAX = 5000
 MIN_YELLOW = 10
 MIN_RED = 10
 
+
 def detectShape(img: cv2.typing.MatLike, mask: cv2.typing.MatLike):
     # converting image into grayscale image
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
@@ -20,7 +21,7 @@ def detectShape(img: cv2.typing.MatLike, mask: cv2.typing.MatLike):
     # here we are ignoring first counter because
     # findcontour function detects whole image as shape
     contours = contours[1:]
-    
+
     contourBoundingBox = []
 
     # list for storing names of shapes
@@ -39,19 +40,19 @@ def detectShape(img: cv2.typing.MatLike, mask: cv2.typing.MatLike):
     finalimage = cv2.bitwise_and(img, img, mask=finalmask)
 
     for c in contourBoundingBox:
-        X,Y,W,H = c
-            
-        croppedimage = finalimage[Y:Y+H,X:X+W]
-        red_output = checkColor(croppedimage,"red1")
+        X, Y, W, H = c
+
+        croppedimage = finalimage[Y : Y + H, X : X + W]
+        red_output = checkColor(croppedimage, "red1")
         red_pixels = cv2.countNonZero(red_output)
-        
-        yellow_output = checkColor(croppedimage,"yellow2")
+
+        yellow_output = checkColor(croppedimage, "yellow2")
         yellow_pixels = cv2.countNonZero(yellow_output)
-        
-        print("   red:",red_pixels)
-        print("yellow:",yellow_pixels)
+
+        print("   red:", red_pixels)
+        print("yellow:", yellow_pixels)
         print()
-        
+
         if red_pixels > MIN_RED and yellow_pixels > MIN_YELLOW:
             finalimage = cv2.rectangle(
                 finalimage, (c[0], c[1]), (c[0] + c[2], c[1] + c[3]), (0, 255, 0), 2
