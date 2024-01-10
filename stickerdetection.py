@@ -46,7 +46,7 @@ def StickerMask(img: cv2.typing.MatLike) -> cv2.typing.MatLike:
     yellow_mask = cv2.inRange(image, yellow_lower, yellow_upper)
     yellow_mask = cv2.dilate(yellow_mask, kernel, iterations=2)
 
-    mask = cv2.bitwise_xor(yellow_mask, red_mask)
+    mask = cv2.bitwise_or(yellow_mask, red_mask) # combines the red and yellow masks
     return mask
 
 
