@@ -5,7 +5,7 @@ Detect UP Stickers from cars using image processing techniques
 Ciron | Corrales | Dayag
 
 ## Problem statement
-Vehicle inspection at the UPLB gate causes traffic congestion when travellilng to and from the campus. Drivers must surrender their licenses or ID if they did not avail the UPLB gate sticker. The program aims to optimize the process of inspection by automating the process of checking whether the car has a sticker or not. This will hopefully improve the traffic flow around the gate area.
+Vehicle inspection at the UPLB gate causes traffic congestion when travellilng to and from the campus. Drivers must surrender their license or ID if they did not avail the UPLB gate sticker. The program aims to optimize the process of inspection by automating the process of checking whether the car has a sticker or not. This will hopefully improve the traffic flow around the gate area.
 
 ## First time setup
 
