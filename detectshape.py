@@ -5,7 +5,7 @@ AREA_MIN = 2000
 AREA_MAX = 5000000
 MIN_YELLOW = 50
 MIN_RED = 50
-PIXELS_AREA_RATIO = 0.35
+PIXELS_AREA_RATIO = 0.30
 RED_YELLOW_RATIO_MIN = 0.10
 RED_YELLOW_RATIO_MAX = 5
 
@@ -66,7 +66,7 @@ def detectShape(img: cv2.typing.MatLike, mask: cv2.typing.MatLike, car_number: i
         area = W * H
         red_yellow_ratio = yellow_pixels / red_pixels
 
-        if True:
+        if False:
             print("        red:", red_pixels)
             print("     yellow:", yellow_pixels)
             print("totalpixels:", totalpixels)
@@ -74,6 +74,10 @@ def detectShape(img: cv2.typing.MatLike, mask: cv2.typing.MatLike, car_number: i
             print("pix-A_ratio:", totalpixels / area)
             print("   RY_ratio:", red_yellow_ratio)
             print()
+            cv2.imwrite(
+                f"output/debug_car_{car_number}_{red_pixels}_{yellow_pixels}.jpg",
+                croppedimage,
+            )
 
         # check if the number of pixel is less than 45% of area
         if totalpixels < area * PIXELS_AREA_RATIO:
