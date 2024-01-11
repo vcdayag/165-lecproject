@@ -87,7 +87,7 @@ class ObjectDetectionApp:
 
             # if no car was detected in the image
             if counted_image is None:
-                cv2.imshow("MainImage", input_img)
+                # cv2.imshow("MainImage", input_img)
                 self.update_pics(input_img)
                 if cv2.waitKey(1) & 0xFF == ord("q"):
                     self.quit()
@@ -113,7 +113,7 @@ class ObjectDetectionApp:
                     self.total_cars_label.config(text=f"Total number of cars: {car_counter}")
                     self.stickered_cars_label.config(text=f"Total number of cars with stickers: {stickered_car_counter}")
 
-            cv2.imshow("MainImage", counted_image)
+            # cv2.imshow("MainImage", counted_image)
             self.update_pics(counted_image)
 
             # self.master.update_idletasks()
