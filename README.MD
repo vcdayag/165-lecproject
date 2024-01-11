@@ -33,7 +33,7 @@ source env/bin/activate
 Just install `ultralytics` and you are ready to go
 
 ```sh
-pip install ultralytics
+pip install ultralytics tk
 ```
 ### Advanced
 
@@ -44,6 +44,7 @@ https://download.pytorch.org/whl/torchvision/ -->
 
 ### CPU ONLY LINUX
 ```sh
+pip install tk
 pip install https://download.pytorch.org/whl/cpu/torch-2.1.2%2Bcpu-cp311-cp311-linux_x86_64.whl
 pip install https://download.pytorch.org/whl/cpu/torchvision-0.16.2%2Bcpu-cp311-cp311-linux_x86_64.whl
 pip install -r cpu.txt
@@ -51,6 +52,7 @@ pip install -r cpu.txt
 
 ### CPU ONLY WINDOWS
 ```sh
+pip install tk
 pip install https://download.pytorch.org/whl/cpu/torch-2.1.2%2Bcpu-cp311-cp311-win_amd64.whl
 pip install https://download.pytorch.org/whl/cpu/torchvision-0.16.2%2Bcpu-cp311-cp311-win_amd64.whl
 pip install -r cpu.txt
