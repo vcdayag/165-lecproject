@@ -152,6 +152,7 @@ class ObjectDetectionApp:
                 possibleStickers = detectShape(result, mask, car_counter)
                 if len(possibleStickers) > 0:
                     stickered_car_counter += 1
+                    self.update_sticker(possibleStickers[0][4])
 
                 if True:
                     print("Cars detected:", car_counter)
@@ -164,7 +165,6 @@ class ObjectDetectionApp:
                         text=f"Total number of cars with stickers: {stickered_car_counter}"
                     )
 
-                self.update_sticker(possibleStickers[0][4])
 
             self.update_pics(counted_image)
             if DISPLAY_EXTERNAL_IMAGE:
