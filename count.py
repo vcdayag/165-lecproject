@@ -12,6 +12,7 @@ from tkinter import filedialog
 from PIL import ImageTk, Image
 
 DISPLAY_EXTERNAL_IMAGE = False
+STICKER_MAX_SIZE = 100
 
 
 class ObjectDetectionApp:
@@ -42,15 +43,27 @@ class ObjectDetectionApp:
         self.canvas = tk.Canvas(
             self.master, width=int(self.w / 2), height=int(self.h / 2)
         )
-        self.canvas.grid(row=0, column=0, rowspan=2, padx=10, pady=10)
+        self.canvas.grid(row=0, column=0, rowspan=3, padx=10, pady=10)
 
-        self.total_cars_label = tk.Label(self.master, text="Total number of cars: 0")
-        self.total_cars_label.grid(row=0, column=1, padx=10, pady=10)
+        StickerGroup = tk.Frame(self.master)
+        StickerGroup.grid(row=0, column=1, pady=1)
+
+        sticker_label = tk.Label(StickerGroup, text="Possible UP Sticker:")
+        sticker_label.pack(side=tk.TOP)
+
+        self.sticker = tk.Canvas(StickerGroup, height=STICKER_MAX_SIZE)
+        self.sticker.pack(side=tk.BOTTOM)
+
+        DataGroup = tk.Frame(self.master)
+        DataGroup.grid(row=1, column=1, pady=1)
+
+        self.total_cars_label = tk.Label(DataGroup, text="Total number of cars: 0")
+        self.total_cars_label.pack(side=tk.TOP, pady=1)
 
         self.stickered_cars_label = tk.Label(
-            self.master, text="Total number of cars with stickers: 0"
+            DataGroup, text="Total number of cars with stickers: 0"
         )
-        self.stickered_cars_label.grid(row=1, column=1, padx=10, pady=10)
+        self.stickered_cars_label.pack(side=tk.BOTTOM, pady=1)
 
         # Buttons and labels on the right
         self.quit_button = tk.Button(self.master, text="Quit", command=self.quit)
@@ -151,6 +164,8 @@ class ObjectDetectionApp:
                         text=f"Total number of cars with stickers: {stickered_car_counter}"
                     )
 
+                self.update_sticker(possibleStickers[0][4])
+
             self.update_pics(counted_image)
             if DISPLAY_EXTERNAL_IMAGE:
                 cv2.imshow("MainImage", counted_image)
@@ -171,6 +186,25 @@ class ObjectDetectionApp:
         # Update canvas with the new image
         self.canvas.create_image(0, 0, anchor=tk.NW, image=image)
         self.canvas.image = image
+
+    def update_sticker(self, pics):
+        (h, _) = pics.shape[:2]
+        # print("height:", h)
+        ratio = STICKER_MAX_SIZE / h
+
+        resized_image = cv2.resize(pics, (0, 0), fx=ratio, fy=ratio)
+        rgb_image = cv2.cvtColor(resized_image, cv2.COLOR_BGR2RGB)
+        image = Image.fromarray(rgb_image)
+        image = ImageTk.PhotoImage(image)
+
+        # Update canvas with the new image
+        self.sticker.create_image(
+            self.sticker.winfo_width() / 2,
+            self.sticker.winfo_height() / 2,
+            anchor=tk.CENTER,
+            image=image,
+        )
+        self.sticker.image = image
 
     def quit(self):
         self.capture.release()

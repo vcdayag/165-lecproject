@@ -90,7 +90,7 @@ def detectShape(img: cv2.typing.MatLike, mask: cv2.typing.MatLike, car_number: i
         final_image = cv2.rectangle(
             final_image, (c[0], c[1]), (c[0] + c[2], c[1] + c[3]), (0, 255, 0), 2
         )
-        possibleStickers.append(c)
+        possibleStickers.append((X, Y, W, H, croppedimage))
 
         cv2.imwrite(
             f"output/car_{car_number}_{red_pixels}_{yellow_pixels}.jpg", croppedimage
