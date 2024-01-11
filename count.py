@@ -11,6 +11,8 @@ import tkinter as tk
 from tkinter import filedialog
 from PIL import ImageTk, Image
 
+DISPLAY_EXTERNAL_IMAGE = False
+
 class ObjectDetectionApp:
     def __init__(self, master):
         self.master = master
@@ -87,10 +89,12 @@ class ObjectDetectionApp:
 
             # if no car was detected in the image
             if counted_image is None:
-                cv2.imshow("MainImage", input_img)
+                if DISPLAY_EXTERNAL_IMAGE:
+                    cv2.imshow("MainImage", input_img)
+                    if cv2.waitKey(1) & 0xFF == ord("q"):
+                        self.quit()
+                
                 self.update_pics(input_img)
-                if cv2.waitKey(1) & 0xFF == ord("q"):
-                    self.quit()
                 continue
 
             # if a car is detected
@@ -113,13 +117,13 @@ class ObjectDetectionApp:
                     self.total_cars_label.config(text=f"Total number of cars: {car_counter}")
                     self.stickered_cars_label.config(text=f"Total number of cars with stickers: {stickered_car_counter}")
 
-            cv2.imshow("MainImage", counted_image)
             self.update_pics(counted_image)
+            if DISPLAY_EXTERNAL_IMAGE:
+                cv2.imshow("MainImage", counted_image)
+                if cv2.waitKey(1) & 0xFF == ord("q"):
+                    self.quit()
 
             # self.master.update_idletasks()
-
-            if cv2.waitKey(1) & 0xFF == ord("q"):
-                self.quit()
 
         # print(f"\nTotal number of cars: {car_counter}")
         # print(f"Total number of cars with stickers: {stickered_car_counter}")
