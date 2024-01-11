@@ -115,6 +115,7 @@ class ObjectDetectionApp:
                 print(
                     "Video frame is empty or video processing has been successfully completed."
                 )
+                tk.messagebox.showinfo(title=None, message="Video frame is empty or video processing has been successfully completed.",)
                 break
 
             # perform object tracking on the input image
