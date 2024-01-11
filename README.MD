@@ -28,15 +28,19 @@ source env/bin/activate
 
 ## Install the dependencies
 
-### SIMPLE
+### Simple
+
+Just install `ultralytics` and you are ready to go
 
 ```sh
 pip install ultralytics
 ```
+### Advanced
 
-https://download.pytorch.org/whl/torch/
+Specific instructions to use the cpu only version of `pytorch` for `Python 3.11`
 
-https://download.pytorch.org/whl/torchvision/
+<!-- https://download.pytorch.org/whl/torch/
+https://download.pytorch.org/whl/torchvision/ -->
 
 ### CPU ONLY LINUX
 ```sh
