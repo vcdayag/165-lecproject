@@ -77,7 +77,8 @@ class ObjectDetectionApp:
     def start_detection(self):
         # REGION_POINTS = [(900, 0), (950, 0), (950, 1080), (900, 1080)]  # line or region points
         # sets the region where detection will occur
-        LEFTREGION = self.w // 2 + 100
+        SHIFT = 100
+        LEFTREGION = self.w // 2 + SHIFT
         RIGHTREGION = LEFTREGION + 50
         REGION_POINTS = [
             (LEFTREGION, 0),
